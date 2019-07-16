@@ -1,0 +1,11 @@
+spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+  batch.job.enabled: false
+
+feed-collector:
+  cron: 0 0/1 * * * ?
+
+elasticsearch:
+  host: localhost
