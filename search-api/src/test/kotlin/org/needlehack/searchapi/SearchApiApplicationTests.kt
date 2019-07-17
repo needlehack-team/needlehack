@@ -1,26 +1,32 @@
 package org.needlehack.searchapi
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import io.searchbox.client.JestClient
-import io.searchbox.core.Search
-import io.searchbox.core.SearchResult
+import org.apache.lucene.search.TotalHits
+import org.elasticsearch.action.search.SearchRequest
+import org.elasticsearch.action.search.SearchResponse
+import org.elasticsearch.action.search.SearchResponseSections
+import org.elasticsearch.action.search.ShardSearchFailure
+import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.common.document.DocumentField
+import org.elasticsearch.search.SearchHit
+import org.elasticsearch.search.SearchHits
+import org.elasticsearch.search.aggregations.Aggregations
+import org.elasticsearch.search.profile.SearchProfileShardResults
+import org.elasticsearch.search.suggest.Suggest
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq
 import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.MediaType
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -30,7 +36,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class SearchApiApplicationTests {
 
     @MockBean
-    lateinit var client: JestClient
+    lateinit var client: RestHighLevelClient
     @Autowired
     lateinit var mockMvc: MockMvc
     @Autowired
@@ -41,7 +47,8 @@ class SearchApiApplicationTests {
         // given
         val term = "testing with kotlin"
         val result = buildSearchResult()
-        given(client.execute(any(Search::class.java))).willReturn(result)
+        given(client.search(any(SearchRequest::class.java),
+                eq(RequestOptions.DEFAULT))).willReturn(result)
 
         // when
         var response = mockMvc.perform(MockMvcRequestBuilders
@@ -58,17 +65,20 @@ class SearchApiApplicationTests {
                 .andExpect(content().string(expectedJson))
     }
 
-    private fun buildSearchResult(): SearchResult {
-        val result = SearchResult(GsonBuilder().create())
-        result.jsonObject = buildJsonObject()
-        result.jsonString = json
-        result.isSucceeded = true
-        result.pathToResult = "hits/hits/_source"
-        return result
-    }
+    private fun buildSearchResult(): SearchResponse {
 
-    private fun buildJsonObject(): JsonObject {
-        return JsonParser().parse(json).getAsJsonObject();
+        val document = DocumentField("name", listOf("My Awesome Tutorial"))
+        val fields = mapOf<String, DocumentField>("id" to document)
+        val hit = SearchHit(1, "1", null, fields)
+        val totalHints = TotalHits(1, TotalHits.Relation.EQUAL_TO)
+        val hits = SearchHits(arrayOf(hit), totalHints, 0.25f)
+        val aggregations = Aggregations(emptyList())
+        val suggest = Suggest(emptyList())
+        val results = SearchProfileShardResults(emptyMap())
+        val sections = SearchResponseSections(hits, aggregations, suggest, false, false, results, 1)
+        val clusters = SearchResponse.Clusters(1, 1, 0)
+        val result = SearchResponse( sections, "test", 0,0,0,0, ShardSearchFailure.EMPTY_ARRAY, clusters)
+        return result
     }
 
     val expectedJson = "[{\"source\":{\"generatedId\":\"1\",\"title\":\"My Awesome post\",\"uri\":\"http://www.david-romero.github.com/awesome-post\",\"creator\":\"David Romero\",\"origin\":\"Twitter\",\"topics\":[\"Kotlin\",\"10x Engineers\"]},\"explanation\":null,\"highlight\":null,\"sort\":null,\"index\":\"twitter\",\"type\":\"tweet\",\"id\":\"1\",\"score\":null,\"parent\":null,\"routing\":null,\"matchedQueries\":[]}]"

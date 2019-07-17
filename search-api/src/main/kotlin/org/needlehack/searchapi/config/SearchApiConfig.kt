@@ -1,35 +1,27 @@
 package org.needlehack.searchapi.config
 
-import org.springframework.context.annotation.Configuration
-import io.searchbox.client.JestClientFactory
+import org.apache.http.HttpHost
+import org.elasticsearch.client.RestClient
+import org.elasticsearch.client.RestClientBuilder
+import org.elasticsearch.client.RestHighLevelClient
 import org.springframework.beans.factory.annotation.Value
-import io.gsonfire.GsonFireBuilder
-import com.google.gson.Gson
-import io.searchbox.client.config.HttpClientConfig
-import io.searchbox.client.JestClient
-import io.searchbox.client.AbstractJestClient
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
 
 @Configuration
-open class SearchApiConfig {
+class SearchApiConfig(@Value("\${jest.elasticsearch.url.schema}") val urlConnectionSchema: String,
+                      @Value("\${jest.elasticsearch.url.host}") val urlConnectionHost: String,
+                      @Value("\${jest.elasticsearch.url.port}") val urlConnectionPort: Int) {
 
-	@Value("\${jest.elasticsearch.url}")
-	private var urlConnection: String? = "localhost:9200"
+    @Bean("highLevelclient", destroyMethod = "close")
+    fun highLevelclient(restClient : RestClientBuilder): RestHighLevelClient {
+        return RestHighLevelClient(restClient)
+    }
 
-	@Bean("jestClient")
-	open fun jestClient(): JestClient {
+    @Bean()
+    fun elasticRestClient() = RestClient.builder(HttpHost(urlConnectionHost, urlConnectionPort, urlConnectionSchema))
 
-		val fireBuilder = GsonFireBuilder()
-		val builder = fireBuilder/*.enableExposeMethodResult()*/.createGsonBuilder()/*.excludeFieldsWithoutExposeAnnotation()*/
 
-		val gson: Gson = builder.setDateFormat(AbstractJestClient.ELASTIC_SEARCH_DATE_FORMAT).create()
-		System.out.println("Establishing JEST Connection to Elasticsearch over HTTP : [$urlConnection]")
-		val factory = JestClientFactory()
-		factory.setHttpClientConfig(HttpClientConfig.Builder(urlConnection)
-				.multiThreaded(true)
-				.readTimeout(20000)
-				.gson(gson)
-				.build())
-		return factory.getObject()
-	}
+
 }
