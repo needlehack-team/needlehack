@@ -1,43 +1,40 @@
 package org.needlehack.searchapi.controller
 
-import org.needlehack.searchapi.model.FeedItem
 import io.searchbox.client.JestClient
 import io.searchbox.core.Search
 import io.searchbox.core.SearchResult
-import org.elasticsearch.index.query.DisMaxQueryBuilder
-import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.index.query.QueryBuilders.disMaxQuery
+import org.elasticsearch.index.query.QueryBuilders.termQuery
 import org.elasticsearch.search.builder.SearchSourceBuilder
-import org.springframework.beans.factory.annotation.Autowired
+import org.needlehack.searchapi.model.FeedItem
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class SearchController {
 
-	@Autowired
-	private val client: JestClient? = null
+class SearchController(val client: JestClient, @Value("\${jest.elasticsearch.index}") val indexName: String) {
 
-	@Value("\${jest.elasticsearch.index}")
-	private var indexName: String? = "feed-collector"
+    val log = LoggerFactory.getLogger(SearchController::class.java)
 
-	@GetMapping("/search")
-	fun search(@RequestParam(value = "term", defaultValue = "*") term: String): List<SearchResult.Hit<FeedItem, Void>>? {
+    @GetMapping("/search")
+    fun search(@RequestParam(value = "term", defaultValue = "*") term: String): List<SearchResult.Hit<FeedItem, Void>> {
 
-		System.out.println("You want to seach: $term")
+        log.info("You want to seach: [$term]")
+        val searchSource = SearchSourceBuilder()
+                .query(disMaxQuery()
+                        .add(termQuery("topics", term))
+                        .add(termQuery("title", term)).tieBreaker(0.3f))
+                .toString()
 
-		val searchSourceBuilder = SearchSourceBuilder()
-		searchSourceBuilder.query(QueryBuilders.disMaxQuery().add(QueryBuilders.termQuery("topics", term)).add(QueryBuilders.termQuery("title", term)).tieBreaker(0.3f))
+        val search = Search.Builder(searchSource).addIndex(indexName)
 
-		val search: Search.Builder = Search.Builder(searchSourceBuilder.toString())
-		if (indexName != null) search.addIndex(indexName)
+        val resultList = client.execute(search.build()).getHits(FeedItem::class.java)
 
-		val result = client?.execute(search.build())
-		val resultList = result?.getHits(FeedItem::class.java)
-
-		System.out.println("found: ${resultList?.size}")
-
-		return resultList
-	}
+        log.info("found: ${resultList.size} items")
+        //TODO: Returns a DTO instead of a JEST Object
+        return resultList
+    }
 }
