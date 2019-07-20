@@ -1,6 +1,6 @@
 ---
 name: Issue template
-about: Template for adding a new issue to devbunch project
+about: Template for adding a new issue to needlehack project
 
 ---
 
