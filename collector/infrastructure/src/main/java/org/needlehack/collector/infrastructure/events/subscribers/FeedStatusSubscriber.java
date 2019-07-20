@@ -7,13 +7,15 @@ import org.needlehack.collector.domain.model.feed.events.CreatedItem;
 import org.needlehack.collector.usecases.feed.CreateFeedItem;
 import org.needlehack.collector.usecases.feed.params.CreatingFeedItemParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FeedStatusSubscriber implements DomainEventSubscriber {
 
     @Autowired
-    private CreateFeedItem createFeedItem;
+    @Lazy
+    CreateFeedItem createFeedItem;
 
     @Override
     public void process(DomainEvent domainEvent) {
@@ -23,11 +25,11 @@ public class FeedStatusSubscriber implements DomainEventSubscriber {
         if (domainEvent instanceof CollectedItem) {
             process((CollectedItem) domainEvent);
         } else if (domainEvent instanceof CreatedItem) {
-            process((CreatedItem) domainEvent);
+            //process((CreatedItem) domainEvent);
         }
     }
 
     private void process(CollectedItem event) {
-        // TODO Nothing to do here
+        createFeedItem.execute(new CreatingFeedItemParams(event.getFeedItem()));
     }
 }

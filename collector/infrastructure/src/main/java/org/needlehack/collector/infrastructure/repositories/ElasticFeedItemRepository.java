@@ -7,15 +7,19 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.needlehack.collector.domain.model.feed.FeedItem;
 import org.needlehack.collector.domain.model.feed.FeedRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 
 @Component
 public class ElasticFeedItemRepository implements FeedRepository {
+
+    private static final Logger logger = LoggerFactory.getLogger(ElasticFeedItemRepository.class);
+
 
     private RestHighLevelClient client;
 
@@ -34,10 +38,10 @@ public class ElasticFeedItemRepository implements FeedRepository {
         IndexRequest indexRequest = new IndexRequest("feed-collector").type("feedItem")
                 .id(feedItem.getId())
                 .source(postMapper);
-        IndexResponse indexResponse = null;
 
         try {
-            indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
+            IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
+            logger.debug("New feedItem indexed [{}]", indexResponse);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

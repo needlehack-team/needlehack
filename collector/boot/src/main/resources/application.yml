@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   jackson:
     serialization:
       write-dates-as-timestamps: true
@@ -9,3 +11,5 @@ feed-collector:
 
 elasticsearch:
   host: localhost
+  port: 9200
+  schema: http

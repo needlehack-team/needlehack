@@ -12,11 +12,11 @@ public class World {
 
     private Feed feed;
 
-    private List<FeedItem> postsCollected;
+    private List<FeedItem> feedItemsCollected;
 
     public void reset() {
         feed = null;
-        postsCollected = new ArrayList<>();
+        feedItemsCollected = new ArrayList<>();
     }
 
     public Feed getFeed() {
@@ -27,11 +27,11 @@ public class World {
         this.feed = feed;
     }
 
-    public void setPostsCollected(List<FeedItem> postsCollected) {
-        this.postsCollected = postsCollected;
+    public void setFeedItemsCollected(List<FeedItem> feedItemsCollected) {
+        this.feedItemsCollected = feedItemsCollected;
     }
 
-    public List<FeedItem> getPostsCollected() {
-        return postsCollected;
+    public List<FeedItem> getFeedItemsCollected() {
+        return feedItemsCollected;
     }
 }
