@@ -1,7 +1,6 @@
 package org.needlehack.collector.steps;
 
 import com.google.common.io.Resources;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -19,8 +18,6 @@ import static org.junit.Assert.*;
 
 public class CollectFeedSteps extends AbstractStepsConfiguration {
 
-    private static final int NETFLIX_ITEMS__IN_RSS = 10;
-
     @Autowired
     private FeedRepository elasticFeedItemRepository;
 
@@ -31,12 +28,17 @@ public class CollectFeedSteps extends AbstractStepsConfiguration {
     private World world;
 
     @Given("^an URI related with an external RSS feed$")
-    public void anURIRelatedWithAnExternalRSSFeed() throws Throwable {
+    public void uRIRelatedWithAnExternalRSSFeed() throws Throwable {
         world.setFeed(new MockFeed("rss/netflix-techblog.xml", "Netflix"));
     }
 
+    @Given("^an URI related with an external RSS feed without content$")
+    public void uRIRelatedWithAnExternalRSSFeedWithoutContent() throws Throwable {
+        world.setFeed(new MockFeed("rss/reactnative-techblog.xml", "React Native"));
+    }
+
     @When("^the collecting feed process is fired up$")
-    public void theCollectingFeedProcessIsFiredUp() {
+    public void collectingFeedProcessIsFiredUp() {
         List<FeedItem> feedItems = (List<FeedItem>) collectFeed.execute(new CollectingFeedParams(world.getFeed()
                 .getSource(), world.getFeed()
                 .getUri()
@@ -45,16 +47,19 @@ public class CollectFeedSteps extends AbstractStepsConfiguration {
     }
 
     @Then("^the feeds are collected$")
-    public void theFeedsAreCollected() {
+    public void feedsAreCollected() {
         assertNotNull(world.getFeedItemsCollected());
         assertFalse(world.getFeedItemsCollected()
                 .isEmpty());
-        assertEquals(NETFLIX_ITEMS__IN_RSS, world.getFeedItemsCollected()
-                .size());
+    }
+
+    @Then("^the items have content and category related with them$")
+    public void itemsHaveContentAndCategoryRelated() {
+        //TODO
     }
 
     @Then("^all the feed items are stored in a data repository$")
-    public void allTheFeedItemsAreStoredInADataRepository() {
+    public void feedItemsAreStoredInADataRepository() {
         //TODO
     }
 
