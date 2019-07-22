@@ -183,6 +183,14 @@ public class FeedItem implements Serializable, Cloneable {
         }
     }
 
+    public FeedItem withContent(String newContent){
+        return new FeedItem(id, title, uri, creator, origin, newContent, collectAt, publicationAt, topics);
+    }
+
+    public FeedItem withTopics(Set<Topic> newTopics){
+        return new FeedItem(id, title, uri, creator, origin, content, collectAt, publicationAt, newTopics);
+    }
+
     public static class FeedItemBuilder {
         private String title;
         private String uri;

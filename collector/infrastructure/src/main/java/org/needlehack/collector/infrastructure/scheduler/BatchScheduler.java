@@ -14,10 +14,10 @@ public class BatchScheduler {
     private final static Logger log = LoggerFactory.getLogger(BatchScheduler.class);
 
 
-    @Autowired
+//    @Autowired
     private SimpleJobLauncher jobLauncher;
 
-    @Autowired
+//    @Autowired
     private Job job;
 
     @Scheduled(cron = "${feed-collector.cron}")

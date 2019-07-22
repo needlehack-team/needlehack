@@ -17,12 +17,18 @@ public class ElasticConfig {
     @Value("${elasticsearch.host}")
     private String elasticsearchHost;
 
+    @Value("${elasticsearch.port}")
+    private int elasticsearchPort;
+
+    @Value("${elasticsearch.schema}")
+    private String elasticsearchSchema;
+
     @Bean(destroyMethod = "close")
     public RestHighLevelClient client() {
 
         Header[] headers = { new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json")};
 
-        RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost(elasticsearchHost, 9200, "http"));
+        RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost(elasticsearchHost, elasticsearchPort, elasticsearchSchema));
         restClientBuilder.setMaxRetryTimeoutMillis(3000); //Currently, set as default
         restClientBuilder.setDefaultHeaders(headers);
 
