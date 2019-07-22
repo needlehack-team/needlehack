@@ -47,12 +47,9 @@ $ ./run.sh
 
 We use [SemVer](http://semver.org/) for versioning.
 
-## Authors
+## Team
 
 * **[Iván Gutiérrez](https://twitter.com/ivan_GRod)** - *Initial work* - [ivangrod](https://github.com/ivangrod)
-
-## Contributors
-
 * **[David Romero](https://twitter.com/davromalc)** - *Development* - [david-romero](https://github.com/david-romero)
 * **[Antonio Jose Rodríguez](https://twitter.com/aj2r)** - *Development* - [ajrodriguez](https://github.com/ajrodriguez)
 * **[Daniel Masegosa](https://twitter.com/danielmasegosa)** - *Development* - [danielmasegosa](https://github.com/danielmasegosa)
