@@ -1,3 +1,5 @@
+server.port: 8082
+
 jest.elasticsearch:
   url:
     schema: http

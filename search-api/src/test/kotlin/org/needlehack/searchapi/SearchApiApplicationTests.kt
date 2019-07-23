@@ -1,12 +1,10 @@
 package org.needlehack.searchapi
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.apache.lucene.search.TotalHits
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchResponseSections
 import org.elasticsearch.action.search.ShardSearchFailure
-import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.document.DocumentField
 import org.elasticsearch.search.SearchHit
@@ -17,7 +15,6 @@ import org.elasticsearch.search.suggest.Suggest
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -47,8 +44,7 @@ class SearchApiApplicationTests {
         // given
         val term = "testing with kotlin"
         val result = buildSearchResult()
-        given(client.search(any(SearchRequest::class.java),
-                eq(RequestOptions.DEFAULT))).willReturn(result)
+        given(client.search(any(SearchRequest::class.java))).willReturn(result)
 
         // when
         var response = mockMvc.perform(MockMvcRequestBuilders
@@ -70,14 +66,12 @@ class SearchApiApplicationTests {
         val document = DocumentField("name", listOf("My Awesome Tutorial"))
         val fields = mapOf<String, DocumentField>("id" to document)
         val hit = SearchHit(1, "1", null, fields)
-        val totalHints = TotalHits(1, TotalHits.Relation.EQUAL_TO)
-        val hits = SearchHits(arrayOf(hit), totalHints, 0.25f)
+        val hits = SearchHits(arrayOf(hit), 1, 0.25f)
         val aggregations = Aggregations(emptyList())
         val suggest = Suggest(emptyList())
         val results = SearchProfileShardResults(emptyMap())
         val sections = SearchResponseSections(hits, aggregations, suggest, false, false, results, 1)
-        val clusters = SearchResponse.Clusters(1, 1, 0)
-        val result = SearchResponse( sections, "test", 0,0,0,0, ShardSearchFailure.EMPTY_ARRAY, clusters)
+        val result = SearchResponse(sections, "test", 0, 0, 0, 0, ShardSearchFailure.EMPTY_ARRAY, SearchResponse.Clusters.EMPTY)
         return result
     }
 
@@ -126,5 +120,6 @@ class SearchApiApplicationTests {
             content { json(mapper.writeValueAsString(expectation)) }
         }
     }*/
+
 
 }
