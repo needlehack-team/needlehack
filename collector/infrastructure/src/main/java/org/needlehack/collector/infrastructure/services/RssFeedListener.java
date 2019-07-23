@@ -11,6 +11,7 @@ import org.needlehack.collector.infrastructure.converter.FeedItemConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,8 +38,8 @@ public class RssFeedListener implements FeedListener {
                     .map(entry -> FeedItemConverter.convertFeedToPost(feed, entry))
                     .collect(Collectors.toList()));
 
-        } catch (IOException | FeedException exception) {
-            log.error("An error has been produced when the feed from source [{0}] was loaded", feed.getSource(), exception);
+        } catch (Exception exception) {
+            log.error("An error has been produced when the feed from source [{}] was loaded", feed.getSource(), exception);
         }
 
         return postsCollected;
