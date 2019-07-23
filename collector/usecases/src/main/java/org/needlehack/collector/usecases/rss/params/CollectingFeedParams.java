@@ -9,32 +9,20 @@ import java.net.URL;
 
 public class CollectingFeedParams implements UseCaseParams {
 
-    private final String source;
-    private final String url;
+    private final Feed feed;
 
-    public CollectingFeedParams(String source, String url) {
-        this.source = source;
-        this.url = url;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public String getUrl() {
-        return url;
+    public CollectingFeedParams(Feed feed) {
+        this.feed = feed;
     }
 
     @Override
     public String toString() {
-        return "CollectingFeedParams{" + "source='" + source + '\'' + ", url='" + url + '\'' + '}';
+        return "CollectingFeedParams{" +
+                "feed=" + feed +
+                '}';
     }
 
     public Feed createObject() {
-        try {
-            return new Feed(new URL(url), source);
-        } catch (MalformedURLException e) {
-            throw new EntityValidationException("Feed couldn't be created");
-        }
+        return (Feed) feed.clone();
     }
 }
