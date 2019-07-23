@@ -39,10 +39,7 @@ public class CollectFeedSteps extends AbstractStepsConfiguration {
 
     @When("^the collecting feed process is fired up$")
     public void collectingFeedProcessIsFiredUp() {
-        List<FeedItem> feedItems = (List<FeedItem>) collectFeed.execute(new CollectingFeedParams(world.getFeed()
-                .getSource(), world.getFeed()
-                .getUri()
-                .toString()));
+        List<FeedItem> feedItems = (List<FeedItem>) collectFeed.execute(new CollectingFeedParams(world.getFeed()));
         world.setFeedItemsCollected(feedItems);
     }
 
