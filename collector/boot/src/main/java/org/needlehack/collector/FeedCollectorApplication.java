@@ -1,11 +1,17 @@
 package org.needlehack.collector;
 
+import org.needlehack.collector.infrastructure.runner.OpmlReader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.StandardEnvironment;
 
 @SpringBootApplication
-public class FeedCollectorApplication {
+public class FeedCollectorApplication implements CommandLineRunner {
+
+    @Autowired
+    OpmlReader opmlReader;
 
     private static final String DEFAULT_ENVIRONMENT = "local";
 
@@ -20,5 +26,10 @@ public class FeedCollectorApplication {
             }
         })
                 .run(args);
+    }
+
+    @Override
+    public void run(String... args) {
+        opmlReader.consumeOpml();
     }
 }

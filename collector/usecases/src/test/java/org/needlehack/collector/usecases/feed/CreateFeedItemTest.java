@@ -52,8 +52,7 @@ public class CreateFeedItemTest {
         given(feedListener.extract(feed)).willReturn(postsCollectedForTest);
 
         // when
-        final List<FeedItem> postsCollected = collectFeed.execute(new CollectingFeedParams(feed.getSource(), feed.getUri()
-                .toString()));
+        final List<FeedItem> postsCollected = collectFeed.execute(new CollectingFeedParams(feed));
 
         // then
         assertTrue(postsCollected != null);
