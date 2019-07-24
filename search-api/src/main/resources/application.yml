@@ -1,6 +1,6 @@
 server.port: 8082
 
-jest.elasticsearch:
+elasticsearch:
   url:
     schema: http
     host: localhost

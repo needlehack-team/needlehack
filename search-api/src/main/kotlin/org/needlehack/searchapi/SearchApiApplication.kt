@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.boot.SpringApplication
 
 @SpringBootApplication
-open class SearchApiApplication
+class SearchApiApplication
 
 fun main(args: Array<String>) {
      SpringApplication.run(SearchApiApplication::class.java, *args)
