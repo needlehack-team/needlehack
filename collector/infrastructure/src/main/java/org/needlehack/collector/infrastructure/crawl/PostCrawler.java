@@ -63,8 +63,7 @@ public abstract class PostCrawler implements ICrawler {
                     final String value = (String) readMethod.invoke(post, input);
                     if (value != null && value.trim()
                             .length() > 0) {
-                        String valueC = Jsoup.clean(value, Whitelist.basic());
-                        valueC = StringEscapeUtils.unescapeHtml4(valueC);
+                        String valueC = JsoupHelper.cleanHtmlFromInput(value);
                         final Method writeMethod = prop.getWriteMethod();
                         writeMethod.invoke(post, valueC);
                     }
