@@ -1,6 +1,9 @@
 package org.needlehack.searchapi
 
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 import org.hamcrest.Matchers.hasSize
+import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,12 +18,13 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.testcontainers.elasticsearch.ElasticsearchContainer
+import java.util.concurrent.TimeUnit
 
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@ContextConfiguration(initializers = [ElasticsearchInitializer::class])
+@ContextConfiguration(initializers = [ElasticsearchInitializer::class, ThrottlingInitializer::class])
 class SearchApiApplicationTests {
 
     @Autowired
@@ -88,6 +92,46 @@ class SearchApiApplicationTests {
                 .andExpect(jsonPath("$.size").value(10))
     }
 
+    @Test
+    fun `given 200 requests per minute when a new requests is performed by the same ip then a too many requests is returned`() {
+        // given
+        performSearchRequest(240) // 4 per second, 240 per minute
+        val term = "kotlin"
+
+        // when
+        val response = mockMvc.perform(MockMvcRequestBuilders
+                .get("/search?term=$term")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON))
+
+        // then
+        response
+                .andExpect(status().isTooManyRequests)
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+    }
+
+    @Before
+    fun setUp() {
+        TimeUnit.SECONDS.sleep(1)
+    }
+
+    fun performSearchRequest(numberOrRequests: Int) = runBlocking {
+        repeat(numberOrRequests) {
+            launch {
+                performRequest()
+                println("coroutine $it")
+            }
+        }
+    }
+
+    suspend fun performRequest() {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/search?term=Test")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON))
+    }
+
+
     companion object {
         @ClassRule
         @JvmField
@@ -95,3 +139,5 @@ class SearchApiApplicationTests {
     }
 
 }
+
+
