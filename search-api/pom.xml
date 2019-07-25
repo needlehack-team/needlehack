@@ -19,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<kotlin.version>1.3.30</kotlin.version>
+        <kotlin.version>1.2.70</kotlin.version>
 		<kotlinx.version>1.0.0</kotlinx.version>
 		<kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <elasticsearch.version>7.2.0</elasticsearch.version>
@@ -80,13 +80,6 @@
             </exclusions>
 		</dependency>
 
-        <!-- Jackson Kotlin -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-kotlin</artifactId>
-            <version>2.9.7</version>
-        </dependency>
-
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -98,6 +91,13 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>elasticsearch</artifactId>
             <version>1.11.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>0.30.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -114,6 +114,7 @@
 				<configuration>
 					<args>
 						<arg>-Xjsr305=strict</arg>
+                        <arg>-Xcoroutines=enable</arg>
 					</args>
 					<compilerPlugins>
 						<plugin>spring</plugin>
