@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Primary
 
 
 @Configuration
-class SearchApiConfig(@Value("\${jest.elasticsearch.url.schema}") val urlConnectionSchema: String,
-                      @Value("\${jest.elasticsearch.url.host}") val urlConnectionHost: String,
-                      @Value("\${jest.elasticsearch.url.port}") val urlConnectionPort: Int) {
+class SearchApiConfig(@Value("\${elasticsearch.url.schema}") val urlConnectionSchema: String,
+                      @Value("\${elasticsearch.url.host}") val urlConnectionHost: String,
+                      @Value("\${elasticsearch.url.port}") val urlConnectionPort: Int) {
 
-    @Bean("highLevelclient", destroyMethod = "close")
+    @Bean(destroyMethod = "close")
     fun highLevelclient(restClient : RestClientBuilder): RestHighLevelClient {
         return RestHighLevelClient(restClient)
     }
