@@ -7,6 +7,9 @@ public class Topic {
 
     public String tag;
 
+    public Topic() {
+    }
+
     public Topic(String tag) {
         this.tag = tag;
     }
