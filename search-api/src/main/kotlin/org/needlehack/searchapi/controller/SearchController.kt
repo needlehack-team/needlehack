@@ -26,7 +26,7 @@ class SearchController(val client: SearchClient) {
                @RequestParam(value = "page", defaultValue = "0") page: Int): Page<Post> {
 
         log.info("You want to search: [$term] in the page $page")
-        val pageRequest = PageRequest(page, 10)
+        val pageRequest = PageRequest.of(page, 10)
         val resultList = client.invoke(term, pageRequest)
                 .map {
                     it.toDto()

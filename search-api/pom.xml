@@ -80,6 +80,13 @@
             </exclusions>
 		</dependency>
 
+        <!-- throttling -->
+        <dependency>
+            <groupId>com.weddini.throttling</groupId>
+            <artifactId>spring-boot-throttling-starter</artifactId>
+            <version>0.0.9</version>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -104,7 +111,18 @@
 
 	</dependencies>
 
-	<build>
+    <repositories>
+        <repository>
+            <id>spring-boot-throttling-repo</id>
+            <url>https://raw.github.com/weddini/spring-boot-throttling/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <build>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
 		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 		<plugins>
