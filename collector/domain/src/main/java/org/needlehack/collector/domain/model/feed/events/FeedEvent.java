@@ -12,7 +12,7 @@ public class FeedEvent extends DomainEvent {
     private final FeedItem feedItem;
 
     public FeedEvent(FeedItem feedItem) {
-        super(feedItem.getId(), Date.from(Instant.now()));
+        super(feedItem.getGeneratedId(), Date.from(Instant.now()));
         this.feedItem = feedItem;
     }
 

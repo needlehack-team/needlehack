@@ -6,4 +6,7 @@ package org.needlehack.collector.domain.model.feed;
 public interface FeedRepository {
 
     FeedItem create(FeedItem feedItem);
+
+    FeedItem findOne(String itemId);
+
 }
