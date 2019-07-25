@@ -1,3 +1,8 @@
+server.port: 8082
+
 jest.elasticsearch:
-  url: http://localhost:9200
+  url:
+    schema: http
+    host: localhost
+    port: 9200
   index: feed-collector

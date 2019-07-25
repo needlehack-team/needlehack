@@ -1,43 +1,45 @@
 package org.needlehack.searchapi.controller
 
+
+import org.needlehack.searchapi.dto.Post
 import org.needlehack.searchapi.model.FeedItem
-import io.searchbox.client.JestClient
-import io.searchbox.core.Search
-import io.searchbox.core.SearchResult
-import org.elasticsearch.index.query.DisMaxQueryBuilder
-import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.search.builder.SearchSourceBuilder
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
+import org.needlehack.searchapi.search.SearchClient
+import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class SearchController {
+class SearchController(val client: SearchClient) {
 
-	@Autowired
-	private val client: JestClient? = null
+    val log = LoggerFactory.getLogger(SearchController::class.java)
 
-	@Value("\${jest.elasticsearch.index}")
-	private var indexName: String? = "feed-collector"
+    @GetMapping("/search")
+    fun search(@RequestParam(value = "term", defaultValue = "*") term: String): List<Post> {
 
-	@GetMapping("/search")
-	fun search(@RequestParam(value = "term", defaultValue = "*") term: String): List<SearchResult.Hit<FeedItem, Void>>? {
+        log.info("You want to seach: [$term]")
 
-		System.out.println("You want to seach: $term")
+        val resultList = client.invoke(term)
+                .map {
+                    it.toDto()
+                }.toList()
 
-		val searchSourceBuilder = SearchSourceBuilder()
-		searchSourceBuilder.query(QueryBuilders.disMaxQuery().add(QueryBuilders.termQuery("topics", term)).add(QueryBuilders.termQuery("title", term)).tieBreaker(0.3f))
+        log.info("found: ${resultList.size} items")
+        return resultList
+    }
 
-		val search: Search.Builder = Search.Builder(searchSourceBuilder.toString())
-		if (indexName != null) search.addIndex(indexName)
 
-		val result = client?.execute(search.build())
-		val resultList = result?.getHits(FeedItem::class.java)
+    fun FeedItem.toDto(): Post {
+        val topics = (this.topics ?: emptySet()).map { it.tag }.toSet()
+        return Post(this.generatedId, this.title, this.uri, this.creator, getContentPreview(), topics)
+    }
 
-		System.out.println("found: ${resultList?.size}")
+    fun FeedItem.getContentPreview(): String {
+        val content = (this.content ?: "")
+        return content.substring(100) + "...";
+    }
 
-		return resultList
-	}
+    fun String.substring(maxIndex: Int): String = if (this.length < maxIndex) substring(0, this.length) else substring(0, maxIndex)
+
+
 }
