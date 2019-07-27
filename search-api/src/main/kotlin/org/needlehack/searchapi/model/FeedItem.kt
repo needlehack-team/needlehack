@@ -1,7 +1,9 @@
 package org.needlehack.searchapi.model
 
-import io.gsonfire.annotations.ExposeMethodResult
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.io.Serializable
-import com.google.gson.annotations.Expose
+import java.util.*
 
-data class FeedItem(val generatedId: String, val title: String, val uri: String, val creator: String, val origin: String, val topics: Set<String>) : Serializable 
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class FeedItem(val generatedId: String, val title: String, val uri: String, val creator: String, val content: String?,
+                    val topics: Set<Topic>?, val collectAt: Date, var publicationAt: Date?) : Serializable

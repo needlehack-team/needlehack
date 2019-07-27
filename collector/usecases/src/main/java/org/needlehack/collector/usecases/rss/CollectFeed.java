@@ -24,9 +24,9 @@ public class CollectFeed implements UseCase<CollectingFeedParams> {
 
         Feed feed = params.createObject();
 
-        List<FeedItem> postsCollected = feedListener.extract(feed);
-        postsCollected.forEach(post -> domainEventPublisher.publish(new CollectedItem(post)));
+        List<FeedItem> feedItemsCollected = feedListener.extract(feed);
+        feedItemsCollected.forEach(feedItem -> domainEventPublisher.publish(new CollectedItem(feedItem)));
 
-        return postsCollected;
+        return feedItemsCollected;
     }
 }

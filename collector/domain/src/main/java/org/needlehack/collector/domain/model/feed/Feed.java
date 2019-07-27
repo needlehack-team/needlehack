@@ -1,12 +1,13 @@
 package org.needlehack.collector.domain.model.feed;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Objects;
 
 /**
  * Entity (part of FeedItem aggregate)
  */
-public class Feed {
+public class Feed implements Serializable, Cloneable {
 
     public URL uri;
 
@@ -53,5 +54,14 @@ public class Feed {
                 "uri='" + uri + '\'' +
                 ", source='" + source + '\'' +
                 '}';
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            return (Feed) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return new Feed(this.getUri(), this.getSource());
+        }
     }
 }

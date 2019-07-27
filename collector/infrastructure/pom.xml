@@ -14,6 +14,7 @@
 
     <properties>
         <rome.version>1.11.0</rome.version>
+        <jsoup.version>1.9.2</jsoup.version>
     </properties>
 
     <dependencies>
@@ -26,7 +27,7 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-batch</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -43,7 +44,7 @@
         <dependency>
             <groupId> org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>6.7.1</version>
+            <version>7.2.0</version>
         </dependency>
 
         <!-- Rome -->
@@ -63,6 +64,21 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
         </dependency>
+
+        <!-- Jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <!-- Commons-text -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.3</version>
+        </dependency>
+
 
         <!-- Guava -->
         <dependency>

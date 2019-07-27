@@ -1,0 +1,2 @@
+INSERT INTO extractor_config (id,origin,selector_content,selector_categories) VALUES (1,'ATLASSIAN','.blog > .aui-page-panel-inner > *:not(.latest-blogs, .signup-container, .comments)','header.blog a[href*=categories]');
+INSERT INTO extractor_config (id,origin,selector_content,selector_categories) VALUES (2,'REACT NATIVE','.post > div', null);

@@ -12,8 +12,6 @@ public class FeedItem implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -5898378247168511380L;
 
-    private String id;
-
     private String generatedId;
 
     private String title;
@@ -35,7 +33,7 @@ public class FeedItem implements Serializable, Cloneable {
     public FeedItem() {
     }
 
-    private FeedItem(String id, String title, String uri, String creator, Feed origin, String content, Date collectAt, Date publicationAt, Set<Topic> topics) {
+    private FeedItem(String title, String uri, String creator, Feed origin, String content, Date collectAt, Date publicationAt, Set<Topic> topics) {
         this.generatedId = generateId(uri);
         this.title = title;
         this.uri = uri;
@@ -47,12 +45,16 @@ public class FeedItem implements Serializable, Cloneable {
         this.topics = topics;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    private FeedItem(String generatedId, String title, String uri, String creator, Feed origin, String content, Date collectAt, Date publicationAt, Set<Topic> topics) {
+        this.generatedId = generatedId;
+        this.title = title;
+        this.uri = uri;
+        this.creator = creator;
+        this.origin = origin;
+        this.content = content;
+        this.collectAt = collectAt;
+        this.publicationAt = publicationAt;
+        this.topics = topics;
     }
 
     public String getGeneratedId() {
@@ -178,9 +180,17 @@ public class FeedItem implements Serializable, Cloneable {
         try {
             return (FeedItem) super.clone();
         } catch (CloneNotSupportedException e) {
-            return new FeedItem(this.getId(), this.getTitle(), this.getUri(), this.getCreator(), this.getOrigin(),
+            return new FeedItem(this.getTitle(), this.getUri(), this.getCreator(), this.getOrigin(),
                     this.getContent(), this.getCollectAt(), this.getPublicationAt(), this.getTopics());
         }
+    }
+
+    public FeedItem withContent(String newContent){
+        return new FeedItem(generatedId, title, uri, creator, origin, newContent, collectAt, publicationAt, topics);
+    }
+
+    public FeedItem withTopics(Set<Topic> newTopics){
+        return new FeedItem(generatedId, title, uri, creator, origin, content, collectAt, publicationAt, newTopics);
     }
 
     public static class FeedItemBuilder {
@@ -234,7 +244,7 @@ public class FeedItem implements Serializable, Cloneable {
         }
 
         public FeedItem createFeedItem() {
-            return new FeedItem(null, title, uri, creator, origin, content, collectAt, publicationAt, topics);
+            return new FeedItem(title, uri, creator, origin, content, collectAt, publicationAt, topics);
         }
     }
 }
