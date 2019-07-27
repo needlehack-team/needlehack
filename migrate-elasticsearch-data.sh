@@ -3,11 +3,12 @@ localElastic=$(docker ps | grep 'docker.elastic.co/elasticsearch/elasticsearch' 
 
 if [[ "$localElastic" != "" ]]
 then
-    input="http://elasticsearch:9200/shakespeare"
-    echo "Moving data from: $input to $1"
+    from="http://elasticsearch:9200/$1"
+    to=$2
+    echo "Moving data from: $from to $to"
 
-    docker run --name=elasticsearch-dump --link=${localElastic}:elasticsearch taskrabbit/elasticsearch-dump --input=${input} \
-      --output=$1 \
+    docker run --name=elasticsearch-dump --link=${localElastic}:elasticsearch taskrabbit/elasticsearch-dump --input=${from} \
+      --output=${to} \
       --type=data
 
     echo "Stopped docker container:" $(docker stop elasticsearch-dump)
