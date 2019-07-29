@@ -47,6 +47,6 @@ public class JsoupHelper {
      * @return
      */
     public static String cleanHtmlFromInput(String inputToClean) {
-        return StringEscapeUtils.unescapeHtml4(Jsoup.clean(inputToClean, Whitelist.basic()));
+        return StringEscapeUtils.unescapeHtml4(Jsoup.clean(inputToClean, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false)));
     }
 }

@@ -26,6 +26,8 @@ public class RssFeedListener implements FeedListener {
     @Override
     public List<FeedItem> extract(final Feed feed) {
 
+        log.info("Extracting RSS from feed [{}]", feed.getSource());
+
         List<FeedItem> postsCollected = new ArrayList<>();
 
         try {
@@ -39,7 +41,7 @@ public class RssFeedListener implements FeedListener {
                     .collect(Collectors.toList()));
 
         } catch (Exception exception) {
-            log.error("An error has been produced when the feed from source [{}] was loaded", feed.getSource(), exception);
+            log.error("An error has been produced when the feed from source [{}] was loaded", feed.getSource());
         }
 
         return postsCollected;
