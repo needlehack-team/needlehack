@@ -9,3 +9,7 @@ elasticsearch:
   host: localhost
   port: 9200
   schema: http
+
+logging:
+  level:
+    org.elasticsearch.client.RestClient: ERROR

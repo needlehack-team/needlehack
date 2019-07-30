@@ -4,6 +4,7 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import org.needlehack.collector.domain.model.feed.Feed;
 import org.needlehack.collector.domain.model.feed.FeedItem;
 import org.needlehack.collector.domain.model.feed.Topic;
+import org.needlehack.collector.infrastructure.crawl.JsoupHelper;
 import org.springframework.util.CollectionUtils;
 
 import java.sql.Date;
@@ -36,7 +37,7 @@ public final class FeedItemConverter {
             StringBuilder strBuilder = new StringBuilder();
             entry.getContents()
                     .forEach(content -> strBuilder.append(content.getValue()));
-            builder.withContent(strBuilder.toString());
+            builder.withContent(JsoupHelper.cleanHtmlFromInput(strBuilder.toString()));
         }
 
         if (!CollectionUtils.isEmpty(entry.getCategories())) {

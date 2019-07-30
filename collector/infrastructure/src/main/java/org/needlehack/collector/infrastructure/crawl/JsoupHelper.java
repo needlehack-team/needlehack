@@ -1,5 +1,6 @@
 package org.needlehack.collector.infrastructure.crawl;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,6 +47,6 @@ public class JsoupHelper {
      * @return
      */
     public static String cleanHtmlFromInput(String inputToClean) {
-        return Jsoup.clean(inputToClean, Whitelist.basic());
+        return StringEscapeUtils.unescapeHtml4(Jsoup.clean(inputToClean, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false)));
     }
 }
