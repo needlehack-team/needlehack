@@ -7,7 +7,7 @@ then
     to=$2
     echo "Moving data from: $from to $to"
 
-    docker run --name=elasticsearch-dump --link=${localElastic}:elasticsearch taskrabbit/elasticsearch-dump --input=${from} \
+    docker run --name=elasticsearch-dump --network=docker_elk --link=${localElastic}:elasticsearch taskrabbit/elasticsearch-dump --input=${from} \
       --output=${to} \
       --type=data
 
