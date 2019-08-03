@@ -42,11 +42,11 @@ To migrate the collected data from our local elasticsearch to the cloud elastics
 ```
 $ ./migrate-elasticsearch-data.sh localIndex cloudElasticPath
 ```
-As first parameter we need to insert the local index to migrate and as second parameter the elastic cloud index path.
+As first parameter we need to insert the local index to migrate and as second parameter the elastic cloud index path adding the user and password.
 
 Example: 
 ```
-$ ./migrate-elasticsearch-data.sh sampleIndex https://elasticCloudHost/sampleIndex
+$ ./migrate-elasticsearch-data.sh sampleIndex https://user:password@elasticCloudHost/sampleIndex
 ```
 
 ## Built With
