@@ -1,0 +1,3 @@
+target/docker/**
+collector/target/docker/**
+search-api/target/docker/**
