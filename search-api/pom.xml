@@ -177,6 +177,7 @@
 							<build>
 								<dockerFileDir>${project.basedir}/../</dockerFileDir>
 								<compression>gzip</compression>
+								<tags>latest</tags>
 							</build>
 						</image>
 					</images>
