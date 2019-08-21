@@ -24,7 +24,7 @@
 		<kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <elasticsearch.version>7.2.0</elasticsearch.version>
 		<!-- The main class to start by executing "java -jar" -->
-		<start-class>org.needlehack.searchapi.SearchApiApplicationKt</start-class>
+		<start-class>com.needlehack.searchapi.SearchApiApplicationKt</start-class>
 	</properties>
 
 	<dependencies>

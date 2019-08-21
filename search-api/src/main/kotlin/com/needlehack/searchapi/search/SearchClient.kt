@@ -1,6 +1,6 @@
-package org.needlehack.searchapi.search
+package com.needlehack.searchapi.search
 
-import org.needlehack.searchapi.model.FeedItem
+import com.needlehack.searchapi.model.FeedItem
 import org.springframework.data.domain.PageRequest
 
 interface SearchClient {

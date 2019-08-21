@@ -1,4 +1,4 @@
-package org.needlehack.searchapi.config
+package com.needlehack.searchapi.config
 
 import org.elasticsearch.ElasticsearchStatusException
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest

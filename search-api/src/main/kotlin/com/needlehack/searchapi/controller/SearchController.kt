@@ -1,9 +1,9 @@
-package org.needlehack.searchapi.controller
+package com.needlehack.searchapi.controller
 
 
-import org.needlehack.searchapi.dto.Post
-import org.needlehack.searchapi.model.FeedItem
-import org.needlehack.searchapi.search.SearchClient
+import com.needlehack.searchapi.dto.Post
+import com.needlehack.searchapi.model.FeedItem
+import com.needlehack.searchapi.search.SearchClient
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -41,7 +41,8 @@ class SearchController(val client: SearchClient) {
 
     fun FeedItem.toDto(): Post {
         val topics = (this.topics ?: emptySet()).map { it.tag }.toSet()
-        return Post(this.generatedId, this.title, this.uri, this.creator, getContentPreview(), topics, this.publicationAt?: Date())
+        return Post(this.generatedId, this.title, this.uri, this.creator, getContentPreview(), topics, this.publicationAt
+                ?: Date())
     }
 
     fun FeedItem.getContentPreview(): String {

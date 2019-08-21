@@ -1,4 +1,4 @@
-package org.needlehack.searchapi
+package com.needlehack.searchapi
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.SpringApplication

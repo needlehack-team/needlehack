@@ -1,4 +1,4 @@
-package org.needlehack.searchapi.controller
+package com.needlehack.searchapi.controller
 
 import com.weddini.throttling.ThrottlingException
 import org.slf4j.LoggerFactory
