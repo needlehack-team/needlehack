@@ -32,8 +32,14 @@ $ mvn clean install
 
 * Run the application from the command line using:
 
+** DEBUG MODE
 ```
-$ ./run.sh
+$ ./run.sh debug
+```
+** DOCKER MODE
+```
+$ ./run.sh debug
+$ docker run --env-file docker/environments/local.list --network docker_elk -h search-api  needlehack/search-api
 ```
 
 ## Built With

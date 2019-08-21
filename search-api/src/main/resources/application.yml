@@ -2,9 +2,9 @@ server.port: 8082
 
 elasticsearch:
   url:
-    schema: http
-    host: localhost
-    port: 9200
+    schema: ${ELASTIC_SCHEMA:http}
+    host: ${ELASTIC_HOST:localhost}
+    port: ${ELASTIC_PORT:9200}
   index: feed-collector
 
 app.limit: 4 #per second. 4*60 => 240 requests per minute
