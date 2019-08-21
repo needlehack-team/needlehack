@@ -2,7 +2,6 @@ package org.needlehack.searchapi.config
 
 import org.elasticsearch.ElasticsearchStatusException
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest
-import org.elasticsearch.action.admin.indices.get.GetIndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.springframework.beans.factory.annotation.Value
@@ -15,9 +14,8 @@ class CreationIndexCommandRunner(val highLevelclient: RestHighLevelClient,
                                  @Value("\${elasticsearch.index}") val indexName: String) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
-        val createIndexRequest = CreateIndexRequest(indexName)
         try {
-            highLevelclient.indices().create(createIndexRequest, RequestOptions.DEFAULT)
+            highLevelclient.indices().create(CreateIndexRequest(indexName), RequestOptions.DEFAULT)
         } catch (e : ElasticsearchStatusException){
             if (!existsIndex(e))
                 throw e

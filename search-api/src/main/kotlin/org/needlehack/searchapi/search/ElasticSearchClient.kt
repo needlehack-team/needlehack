@@ -9,6 +9,7 @@ import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.builder.SearchSourceBuilder
+import org.elasticsearch.search.sort.ScoreSortBuilder
 import org.elasticsearch.search.sort.SortOrder
 import org.needlehack.searchapi.model.FeedItem
 import org.springframework.beans.factory.annotation.Value
@@ -26,11 +27,13 @@ class ElasticSearchClient(val client: RestHighLevelClient,
     override fun invoke(term: String, pageRequest: PageRequest): Set<FeedItem> {
         val searchSource = SearchSourceBuilder()
                 .query(QueryBuilders.disMaxQuery()
-                        .add(QueryBuilders.termQuery("topics", term))
-                        .add(QueryBuilders.termQuery("title", term))
+                        .add(QueryBuilders.matchQuery("topics", term))
+                        .add(QueryBuilders.matchQuery("content", term))
+                        .add(QueryBuilders.matchQuery("title", term))
                         .tieBreaker(0.3f))
                 .from(pageRequest.pageNumber.times(pageRequest.pageSize))
                 .size(pageRequest.pageSize)
+                .sort(ScoreSortBuilder().order(SortOrder.DESC))
                 .sort("collectAt", SortOrder.DESC)
 
         val searchRequest = SearchRequest()
@@ -44,6 +47,6 @@ class ElasticSearchClient(val client: RestHighLevelClient,
         }.toSet()
     }
 
-    fun String.asDomainObject(): FeedItem = jacksonObjectMapper.readValue<FeedItem>(this)
+    fun String.asDomainObject(): FeedItem = jacksonObjectMapper.readValue(this)
 
 }
