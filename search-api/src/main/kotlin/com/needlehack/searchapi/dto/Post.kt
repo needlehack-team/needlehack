@@ -1,4 +1,4 @@
-package org.needlehack.searchapi.dto
+package com.needlehack.searchapi.dto
 
 import java.io.Serializable
 import java.util.*

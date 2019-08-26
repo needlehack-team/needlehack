@@ -1,4 +1,4 @@
-package org.needlehack.searchapi.search
+package com.needlehack.searchapi.search
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -11,7 +11,7 @@ import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.sort.ScoreSortBuilder
 import org.elasticsearch.search.sort.SortOrder
-import org.needlehack.searchapi.model.FeedItem
+import com.needlehack.searchapi.model.FeedItem
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component

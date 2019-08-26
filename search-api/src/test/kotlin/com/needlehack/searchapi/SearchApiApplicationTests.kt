@@ -1,4 +1,4 @@
-package org.needlehack.searchapi
+package com.needlehack.searchapi
 
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking

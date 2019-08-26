@@ -1,13 +1,13 @@
-package org.needlehack.searchapi
+package com.needlehack.searchapi
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.xcontent.XContentType
-import org.needlehack.searchapi.controller.SearchController
-import org.needlehack.searchapi.model.FeedItem
-import org.needlehack.searchapi.model.Topic
+import com.needlehack.searchapi.controller.SearchController
+import com.needlehack.searchapi.model.FeedItem
+import com.needlehack.searchapi.model.Topic
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
