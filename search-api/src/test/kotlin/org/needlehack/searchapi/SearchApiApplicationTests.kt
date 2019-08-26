@@ -110,6 +110,36 @@ class SearchApiApplicationTests {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
     }
 
+    @Test
+    fun `given an uppercase search term when a search is performed then a json with results is returned`() {
+        /// given
+        val term = "AWESOME"
+
+        // when
+        val response = mockMvc.perform(MockMvcRequestBuilders
+                .get("/search?term=$term")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON))
+
+
+        // then
+        response
+                .andExpect(status().isOk)
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.content").isArray)
+                .andExpect(jsonPath("$.content", hasSize<Any>(10)))
+                .andExpect(jsonPath("$.content[0].title").value("Dummy article about kotlin 15"))
+                .andExpect(jsonPath("$.content[0].uri").value("https://david-romero.github.io//articles/2019-05/jbcnconf-2019"))
+                .andExpect(jsonPath("$.content[0].creator").value("David Romero"))
+                .andExpect(jsonPath("$.content[0].content").value("Kotlin is awesome..."))
+                .andExpect(jsonPath("$.content[0].topics").isArray)
+                .andExpect(jsonPath("$.content[0].topics", hasSize<Any>(1)))
+                .andExpect(jsonPath("$.content[0].topics[0]").value("kotlin"))
+                .andExpect(jsonPath("$.numberOfElements").value(10))
+                .andExpect(jsonPath("$.number").value(0))
+                .andExpect(jsonPath("$.size").value(10))
+    }
+
     @Before
     fun setUp() {
         TimeUnit.SECONDS.sleep(1)

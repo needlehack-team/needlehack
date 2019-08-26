@@ -18,8 +18,10 @@ class SearchController(val client: SearchClient) {
 
     val log = LoggerFactory.getLogger(SearchController::class.java)
 
-    val MAX_CONTENT_SIZE = 150
-    val CONTENT_DECORATOR = "..."
+    companion object {
+        const val MAX_CONTENT_SIZE = 150
+        const val CONTENT_DECORATOR = "..."
+    }
 
     @GetMapping("/search")
     fun search(@RequestParam(value = "term", defaultValue = "*") term: String,

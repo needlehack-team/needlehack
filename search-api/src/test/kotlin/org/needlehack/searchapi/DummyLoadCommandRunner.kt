@@ -33,10 +33,10 @@ class DummyLoadCommandRunner(val highLevelclient: RestHighLevelClient,
     }
 
     fun create(feedItem: FeedItem) {
-        val postMapper: String = jacksonObjectMapper.writeValueAsString(feedItem)
+        val feedAsJson = jacksonObjectMapper.writeValueAsString(feedItem)
         val indexRequest = IndexRequest("feed-collector")
                 .id(feedItem.generatedId)
-                .source(postMapper, XContentType.JSON)
+                .source(feedAsJson, XContentType.JSON)
 
         try {
             val indexResponse = highLevelclient.index(indexRequest, RequestOptions.DEFAULT)

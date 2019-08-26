@@ -1,4 +1,3 @@
 package org.needlehack.searchapi.model
 
-data class Topic(val tag: String) {
-}
+data class Topic(val tag: String)

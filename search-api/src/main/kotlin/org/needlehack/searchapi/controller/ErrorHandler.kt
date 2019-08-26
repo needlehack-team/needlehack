@@ -12,13 +12,13 @@ class ErrorHandler {
 
     val log = LoggerFactory.getLogger(SearchController::class.java)
 
-    @ExceptionHandler(value = arrayOf(Exception::class))
+    @ExceptionHandler(value = [Exception::class])
     fun internalError(oops: Exception): ResponseEntity<String> {
         log.error("Unexpected error ", oops)
         return ResponseEntity.status(500).body("Internal Error")
     }
 
-    @ExceptionHandler(value = arrayOf(ThrottlingException::class))
+    @ExceptionHandler(value = [ThrottlingException::class])
     fun limitReached(oops: ThrottlingException): ResponseEntity<String> {
         log.error("Limit has been reached.", oops)
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Too many requests. Limit has been reached. Please, perform request  less frequently")
