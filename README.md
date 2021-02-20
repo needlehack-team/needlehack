@@ -42,6 +42,19 @@ $ ./run.sh debug
 $ docker run --env-file docker/environments/local.list --network docker_elk -h search-api  needlehack/search-api
 ```
 
+## Migrate elasticsearch data
+
+To migrate the collected data from our local elasticsearch to the cloud elasticsearch we can use the following command:
+```
+$ ./migrate-elasticsearch-data.sh localIndex cloudElasticPath
+```
+As first parameter we need to insert the local index to migrate and as second parameter the elastic cloud index path adding the user and password.
+
+Example: 
+```
+$ ./migrate-elasticsearch-data.sh sampleIndex https://user:password@elasticCloudHost/sampleIndex
+```
+
 ## Built With
 
 * [Spring Framework](https://spring.io/) - The framework used

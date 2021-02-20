@@ -75,6 +75,9 @@ local.properties
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .idea/
+*.iws
+*.iml
+*.ipr
 
 # User-specific stuff
 .idea/**/workspace.xml
