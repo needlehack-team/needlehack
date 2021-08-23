@@ -14,7 +14,7 @@
 
     <properties>
         <rome.version>1.11.0</rome.version>
-        <jsoup.version>1.9.2</jsoup.version>
+        <jsoup.version>1.14.2</jsoup.version>
     </properties>
 
     <dependencies>
